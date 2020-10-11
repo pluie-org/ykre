@@ -1,5 +1,6 @@
 use std::panic;
 use std::env;
+use std::io;
 use std::sync::mpsc::TryRecvError;
 
 use crate::ykre::*;
@@ -43,11 +44,15 @@ pub fn get_data(buf :&mut String, limit :u32) -> bool {
     return has_data
 }
 
-pub fn run() {
+pub fn run() -> io::Result<()> {
+    set_panic();
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
-        println!("{}", YKRE_HELP);
-        return
+        title(YKRE_NAME, YKRE_VERSION, YKRE_LICENSE, YKRE_AUTHOR);
+        description(YKRE_DESCRIPTION);
+        usage();
+        example();
+        return Ok(());
     }
     else if args.len() > 1 && args.len() <= 3 {
 
@@ -59,9 +64,32 @@ pub fn run() {
         };
         let limit : u32  = env::var("YKRE_LIMIT_ATTEMPT").unwrap_or(format!("{}", YKRE_LIMIT_ATTEMPT).to_owned()).parse::<u32>().unwrap();
         if get_data(&mut buf, limit) {
-            return find(search, def, buf);
+            find(search, def, buf);
+            return Ok(());
         }
         panic!(YKRE_ERROR_NOPIPE)
     }
     panic!(YKRE_ERROR_INVALID)
+}
+
+pub fn set_panic() {
+    panic::set_hook(Box::new(|_info| {
+        let mut bypass :bool = false;
+        if let Some(location) = &_info.location() {
+            bypass = location.file() == PANIC_BYPASS_FILE && location.line() == PANIC_BYPASS_LINE;
+        }
+        if !bypass {
+            //~ println!("{:?}", &_info);
+            if let Some(s) = &_info.payload().downcast_ref::<&str>() {
+                if s.len() > 1 {
+                    title(YKRE_NAME, YKRE_VERSION, YKRE_LICENSE, YKRE_AUTHOR);
+                    perror(s);
+                    if *s != &YKRE_ERROR_NOTFOUND {
+                        usage();
+                        println!("");
+                    }
+                }
+            }
+        }
+    }));
 }

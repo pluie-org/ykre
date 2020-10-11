@@ -3,15 +3,15 @@
 **Ykre** is a small cli program written in rust wich purpose is to extract from a list
 of yaml documents, documents matching a specified condition. **Ykre** goal is to find 
 specific Kubernetes Resource from the kustomize output.
-**Ykre** stands for **Y**aml **K**ubernetes **R**esources **E**ctractor.
+**Ykre** stands for **Y**aml **K**ubernetes **R**esources **E**xtractor.
 
 
 ## Install
 
 from a debian package :
 ``` 
-wget -q https://github.com/pluie-org/ykre/raw/master/dist/ykre_0.1.0_amd64.deb
-sudo apt install ./ykre_0.1.0_amd64.deb
+wget -q https://github.com/pluie-org/ykre/raw/master/dist/ykre_0.2.0_amd64.deb
+sudo apt install ./ykre_0.2.0_amd64.deb
 ```
 
 via Cargo
