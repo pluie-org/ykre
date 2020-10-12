@@ -5,6 +5,8 @@ of yaml documents, documents matching a specified condition. **Ykre** goal is to
 specific Kubernetes Resource from the kustomize output.
 **Ykre** stands for **Y**aml **K**ubernetes **R**esources **E**xtractor.
 
+![ykre](https://www.pluie.org/img/ykre.png)
+  
 
 ## Install
 
@@ -25,7 +27,7 @@ wget -q -O - https://github.com/pluie-org/ykre/raw/master/install.sh | sh
 ykre SEARCH [DEF]
 ```
 
-## examples
+## Examples
 
 display content of the kubernetes resource 'myResourceName'
 ```
